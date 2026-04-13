@@ -1,0 +1,14 @@
+{
+  "name": "trabalho2-backend",
+  "version": "1.0.0",
+  "description": "Backend do trabalho — contatos em MySQL e Mongo",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongodb": "^6.12.0",
+    "mysql2": "^3.12.0"
+  }
+}

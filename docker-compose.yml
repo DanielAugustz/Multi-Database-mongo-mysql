@@ -1,0 +1,52 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: daniel
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - app-network
+
+  app:
+    build: .
+    container_name: api_contatos
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: daniel
+      MONGO_URI: mongodb://mongodb:27017
+      MONGO_DATABASE: daniel
+    depends_on:
+      - mysql
+      - mongodb
+    networks:
+      - app-network
+
+volumes:
+  mongo_data:
+  mysql_data:
+
+networks:
+  app-network:
+    driver: bridge
